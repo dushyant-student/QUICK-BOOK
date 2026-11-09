@@ -1,15 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { useAuth } from "@/context/authProvider";
 import { usePathname, useRouter } from "next/navigation";
-
-import { LogOut, BookDashed, ShoppingBag, ShoppingBasket, Ticket, User, Menu, X, NotepadTextIcon, Megaphone, Clock,} from "lucide-react";
-
+import {  BookDashed, ShoppingBag, ShoppingBasket, Ticket, User, Menu, X, NotepadTextIcon, Megaphone, Clock, LogOut,} from "lucide-react";
 import Link from "next/link";
+import { LogoutService } from "@/services/authServices";
 
-export default function SideBar() {
-  const { user,myShopInfo , logout } = useAuth();
+export default function SideBar({ user , myShopInfo }) {
+  
+  
   const pathname = usePathname();
   const router = useRouter();
 
@@ -17,11 +16,11 @@ export default function SideBar() {
 
   const handleLogout = async () => {
     try {
-      await logout();
+      await LogoutService();
       setIsOpen(false);
       router.replace("/login");
     } catch (error) {
-      console.error("Logout failed:", error);
+      // console.error("Logout failed:", error);
     }
   };
 

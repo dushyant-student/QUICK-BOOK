@@ -1,9 +1,10 @@
 "use client";
 
-import { LoginService, LogoutService, RegisterService, } from "@/services/authServices";
-import { myShopData } from "@/services/createShopServices";
+
 import { createContext, useContext, useEffect, useState, useCallback } from "react";
 import { getShopNotifications } from "@/services/genNotifiServices";
+import { ShopById } from "@/services/createShopServices";
+
 
 
 const AuthContext = createContext(null);
@@ -13,12 +14,11 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [myShopInfo, setMyshopInfo] = useState(null);
-  const userId = user?._id;
-  const [viewALL, setViewAll] = useState(false)
   const [genNotification, setGenNotification] = useState(null);
   const [noti_len, setNoti_len] = useState(0);
-
-
+  const [viewALL, setViewALL] = useState(false);
+  let userId = null;
+  let API_URL = process.env.NEXT_PUBLIC_BACKEND_API_URL ;
 
   // CHECK AUTH USER
   useEffect(() => {
@@ -27,15 +27,16 @@ export function AuthProvider({ children }) {
     const getUser = async () => {
       try {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/auth/me`,
+          `${API_URL}/auth/me`,
           {
-              credentials: "include",
-              cache: "no-store",
+            credentials: "include",
+            cache: "no-store",
           }
-      );
-
-
+        );
+        
+        
         const data = await response.json();
+
 
         if (!mounted) return;
 
@@ -47,7 +48,7 @@ export function AuthProvider({ children }) {
           setUser(null);
         }
       } catch (error) {
-        console.error("Auth check failed:", error);
+        // console.error("Auth check failed:", error);
 
         if (mounted) {
           setUser(null);
@@ -67,46 +68,7 @@ export function AuthProvider({ children }) {
     };
   }, []);
 
-
-
-
-
-  // 2. Register
-  const register = async (formData) => {
-    try {
-      const data = await RegisterService(formData);
-
-      if (!data.success || !data.user) {
-        throw new Error(data.message || "Registration failed");
-      }
-
-      setUser(data.user);
-      return data;
-    } catch (error) {
-      console.error("Registration error:", error);
-      throw error;
-    }
-  };
-
-
-
-  // 3. Login
-  const login = async (formData) => {
-    try {
-      const data = await LoginService(formData);
-
-      if (!data.success || !data.user) {
-
-        throw new Error(data.message || "Login failed");
-      }
-
-      setUser(data.user);
-      return data;
-    } catch (error) {
-      // console.error("Login error:", error.response?.data?.message);
-      throw error;
-    }
-  };
+  userId = user?._id;
 
 
 
@@ -118,9 +80,8 @@ export function AuthProvider({ children }) {
     }
 
     try {
-      const response = await myShopData(userId);
+      const response = await ShopById(userId);
 
-      // console.log("Shop API response:", response);
 
       if (response.success) {
         setMyshopInfo(
@@ -134,26 +95,28 @@ export function AuthProvider({ children }) {
 
       // console.log("Shop info fetched:", response.data);
     } catch (error) {
-      console.error("Shop info error:", error);
+      // console.error("Shop info error:", error);
       setMyshopInfo(null);
     }
   }, []);
 
 
 
-  //Logout
-  const logout = async () => {
-    try {
-      const response = await LogoutService();
+  useEffect(() => {
+    const savedView = sessionStorage.getItem("viewALL");
 
-      setUser(null);
-      setMyshopInfo(null);
-
-      return response;
-    } catch (err) {
-      console.error("Logout failed:", err);
-      throw err;
+    if (savedView !== null) {
+      setViewALL(savedView === "true");
     }
+  }, []);
+
+
+  const changeView = () => {
+    setViewALL(prev => {
+      const newView = !prev;
+      sessionStorage.setItem("viewALL", String(newView));
+      return newView;
+    });
   };
 
 
@@ -166,7 +129,7 @@ export function AuthProvider({ children }) {
         setGenNotification(response?.data || null);
         setNoti_len(response?.data?.length ?? 0);
       } catch (error) {
-        console.error("Notification fetch failed:", error);
+        // console.error("Notification fetch failed:", error);
       }
     };
 
@@ -176,7 +139,7 @@ export function AuthProvider({ children }) {
 
 
 
-  // 6. Fetch shop whenever userId changes
+  // Fetch shop whenever userId changes
   useEffect(() => {
     if (!isLoading) {
       ShopInfo(userId);
@@ -184,19 +147,15 @@ export function AuthProvider({ children }) {
   }, [userId, isLoading, ShopInfo]);
 
 
-  // console.log("USERRRR****** FROM USEAUTH",user,noti_len,genNotification,myShopInfo)
+  
   return (
     <AuthContext.Provider
       value={{
         user,
-        setUser,
-        isLoading,
-        register,
-        login,
         myShopInfo,
-        logout,
+        isLoading,
         viewALL,
-        setViewAll,
+        changeView,
         genNotification,
         noti_len
       }}

@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 
 
 
-export default function Dashboard( {details} ) {
+export default function Dashboard( { details } ) {
   const { user } = useAuth();
   const [histdata, setHist_data] = useState([]);
   const [ticketInfo, setTicketInfo] = useState(null);

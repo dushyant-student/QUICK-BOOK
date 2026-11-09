@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth } from "@/context/authProvider";
-import { UpdateService } from "@/services/authServices";
+import { UpdateProfile } from "@/services/profileServices";
 import { Camera, Eye, EyeOff } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
@@ -38,7 +38,6 @@ export default function Profile() {
     }
   }, [user]);
 
-
   // Input change
   const handleChange = (key, value) => {
     setForm((prev) => ({
@@ -46,7 +45,8 @@ export default function Profile() {
       [key]: value,
     }));
   };
-
+  
+  
 
   // open Image Box
   const openInputBox = () => {
@@ -67,7 +67,7 @@ export default function Profile() {
 
 
   // Update profile
-  const updateProfile = async () => {
+  const EditProfile = async () => {
     try {
       setIsUpdating(true);
       setExitERROR("")
@@ -97,7 +97,7 @@ export default function Profile() {
       }
 
 
-      const updated = await UpdateService(formData);
+      const updated = await UpdateProfile(formData);
 
       if (updated?.success) {
         toast.success("Profile Successfully Updated!");
@@ -118,7 +118,7 @@ export default function Profile() {
       }
 
     } catch (err) {
-      console.error("Error in update profile:", err);
+      // console.error("Error in update profile:", err);
       toast.error( err.response?.data?.message || "Something went wrong while updating profile");
     }  finally {
       setIsUpdating(false);
@@ -135,18 +135,19 @@ export default function Profile() {
       {/* Profile Image */}
       <div className="flex gap-10 items-center mb-8 z-0 ">
         <div className="relative z-0 ">
-          <img
+         <img
             src={
               image ||
-              (typeof form.imageURL === "string"
-                ? form.imageURL
-                : null) ||
-              "../image/defaultImage.png"
+              form?.imageURL ||
+              "/image/defaultImage.png"
             }
             alt="Profile"
-            className="w-30 h-30 rounded-full object-cover  "
+            onError={(e) => {
+              e.currentTarget.src = "/image/defaultImage.png";
+            }}
+            className="w-30 h-30 rounded-full object-cover"
           />
-
+         
           <button
             type="button"
             title="Change profile picture"
@@ -170,7 +171,7 @@ export default function Profile() {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          updateProfile();
+          EditProfile();
         }}
         className="grid gap-5 max-w-xl"
       >
@@ -206,6 +207,7 @@ export default function Profile() {
             type="email"
             name="email"
             value={form.email}
+            autoComplete="user-email"
             onChange={(e) =>
               handleChange("email", e.target.value)
             }

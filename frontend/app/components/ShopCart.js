@@ -1,37 +1,45 @@
-"use client"
 
-import { getAllShop } from "@/services/createShopServices.js";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
 import { MapPin, UserRound, BriefcaseBusiness, Users, ArrowRight, Store, Clock3, Star } from "lucide-react";
 import Footer from "./Footer";
-import toast from "react-hot-toast";
+import { getAllShop } from "@/services/serverServices";
+import LoadingSpinner from "./LoadingSpinner";
 
-export default function ShopCart() {
-    
-    const [shops,setShops] = useState("");
-    const FetchAllShops = async()=>{
-        try{
-            let shopList = await getAllShop();
-            setShops(shopList?.data || [] );
-    
-        }catch(err){
-            console.log(err)
-            toast.error("Network Error")
-        }
+export default async function ShopCart() {
+    let shops = [];
+    let ExistErr = false;
+    let Laoding = false ;
 
+
+    try {
+        Laoding = true ;
+        const shopList = await getAllShop();
+        shops = shopList?.data || [];
+        Laoding = false ;
+
+    } catch (err) {
+        ExistErr = true;
+        
+    }finally{
+        Laoding = false ;
     }
 
-    useEffect(
-        ()=>{FetchAllShops()
-        },[])
 
-    // console.log(shops)
+    if (Laoding){
+        return <div className="flex flex-col " >
+        <LoadingSpinner/>
+        <Footer/>
+        </div>
+    }
+
+
+   
+   
 
     return (
         <section className="min-h-screen pb-10 w-full bg-slate-50 px-4 py-8 sm:px-6 lg:px-8">
 
-   
+            {/* //Header */}
             <div className="mx-auto mb-8 max-w-7xl">
 
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
@@ -85,10 +93,11 @@ export default function ShopCart() {
             </div>
 
 
+
             {/* SHOPs LIST */}
             <div className="mx-auto flex max-w-7xl flex-col gap-6">
 
-                {shops?.length > 0 ? (
+                {shops?.length > 0 || !ExistErr ? (
                     shops?.map((shop, ind) => (
 
                         <article
@@ -476,10 +485,13 @@ export default function ShopCart() {
                         </article>
 
                     ))
-                ) : (
-
-                  
-                    //    EMPTY STATE
+                ) 
+                
+                : 
+                
+                
+                (
+                    //  if Shops Are Not Avilable
                    
                     <div className="
                         flex min-h-88 flex-col
@@ -500,15 +512,26 @@ export default function ShopCart() {
                         <h2 className="
                             mt-5 text-xl font-bold text-slate-800
                         ">
-                            No Shops Available
+                            {
+                                ExistErr? 
+                                "Internet/Network Issue"
+                                :
+                                " No Shops Available"
+                            }
+                           
                         </h2>
 
                         <p className="
                             mt-2 max-w-md text-sm
                             leading-6 text-slate-500
                         ">
-                            There are currently no shops available.
-                            Please check again later.
+                            { 
+                            ExistErr ? 
+                            "Please! check Check Your Internet connection again later." 
+                            :
+                            "There are currently no shops available. Please check again later." 
+                            }
+                            
                         </p>
 
                     </div>

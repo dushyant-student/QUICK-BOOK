@@ -29,7 +29,7 @@ function TurnInfo({ TableData ,shopId }) {
             }
 
         } catch (err) {
-            console.log(err, "err in My shop page :-")
+            // console.log(err, "err in My shop page :-")
         }
     }
 

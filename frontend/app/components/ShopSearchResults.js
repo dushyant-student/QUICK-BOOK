@@ -5,8 +5,10 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import api from "@/lib/axios";
 import HomeNavBar from "./HomeNavBar";
+import { useAuth } from "@/context/authProvider";
 
 export default function ShopSearchResults() {
+  const { user } = useAuth();
   const params = useSearchParams();
   const query = params.get("q") || "";
   const [shops, setShops] = useState([]);
@@ -15,7 +17,6 @@ export default function ShopSearchResults() {
 
   useEffect(() => {
     let ignore = false;
-
     async function fetchShops() {
 
       if (!query.trim()) {
@@ -39,7 +40,7 @@ export default function ShopSearchResults() {
           setShops(response.data?.shops || []);
         }
       } catch (err) {
-        console.error("Shop search error:", err);
+        // console.error("Shop search error:", err);
 
         if (!ignore) {
           setError("Shops Not Load... Please try again.");
@@ -61,7 +62,7 @@ export default function ShopSearchResults() {
 
   return (
     <main className="mx-auto min-h-screen max-w-6xl px-4 pb-10 pt-24">
-      <HomeNavBar />
+      <HomeNavBar user={user} />
       <h1 className="mb-2 text-2xl font-bold text-gray-900">
         Shop Search
       </h1>

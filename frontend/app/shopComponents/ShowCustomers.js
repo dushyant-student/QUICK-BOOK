@@ -7,13 +7,15 @@ import toast from "react-hot-toast";
 
 export default function ShowCustomers({ Customersdata }) {
   const [customers, setCustomers] = useState(Customersdata || []);
-  const { viewALL, setViewAll } = useAuth();
+  let { viewALL, changeView, } = useAuth();
+
 
   useEffect(() => {
     if (Customersdata) {
       setCustomers(Customersdata);
     }
   }, [Customersdata]);
+
 
 
   // REMOVE CUSTOMER
@@ -42,7 +44,7 @@ export default function ShowCustomers({ Customersdata }) {
         );
       }
     } catch (error) {
-      console.error("Delete customer error:", error);
+      // console.error("Delete customer error:", error);
       toast.error("Something went wrong");
     }
   };
@@ -68,7 +70,7 @@ export default function ShowCustomers({ Customersdata }) {
         );
       }
     } catch (error) {
-      console.error("Confirm customer error:", error);
+      // console.error("Confirm customer error:", error);
       toast.error("Something went wrong");
     }
   };
@@ -106,47 +108,15 @@ export default function ShowCustomers({ Customersdata }) {
               <button
                 type="button"
                 onClick={() => setCustomers(Customersdata || [])}
-                className="
-                  flex-1
-                  rounded-lg
-                  bg-green-50
-                  px-3
-                  py-2
-                  text-xs
-                  font-semibold
-                  text-green-700
-                  transition
-                  hover:bg-green-100
-                  active:scale-95
-                  sm:flex-none
-                  sm:text-sm
-                  cursor-pointer
-                "
-              >
+                className=" rounded-lg bg-green-50 px-3 py-2 text-xs font-semibold text-green-700 transition hover:bg-green-100 active:scale-95 sm:flex-none sm:text-sm cursor-pointer"      >
                 Refresh
               </button>
 
               {/* VIEW TOGGLE */}
               <button
                 type="button"
-                onClick={() => setViewAll(!viewALL)}
-                className="
-                  flex-1
-                  rounded-lg
-                  bg-orange-50
-                  px-3
-                  py-2
-                  text-xs
-                  font-semibold
-                  text-orange-700
-                  transition
-                  hover:bg-orange-100
-                  active:scale-95
-                  sm:flex-none
-                  sm:text-sm
-                  cursor-pointer
-                "
-              >
+                onClick={changeView}
+                className=" flex-1 rounded-lg bg-orange-50 px-3 py-2 text-xs font-semibold text-orange-700 transition hover:bg-orange-100 active:scale-95 sm:flex-none sm:text-sm cursor-pointer">
                 {viewALL ? "Small View" : "Full View"}
               </button>
             </div>
@@ -243,29 +213,13 @@ export default function ShowCustomers({ Customersdata }) {
                             "/default-avatar.png"
                           }
                           alt="Customer"
-                          className="
-                            h-10
-                            w-10
-                            shrink-0
-                            rounded-full
-                            border
-                            border-slate-200
-                            object-cover
-                          "
-                        />
+                          className="h-10w-10shrink-0rounded-fullborderborder-slate-200object-cover"/>
 
                         <div className="min-w-0">
 
                           <p
                             title={appointment?.customerId?.name}
-                            className="
-                              max-w-45
-                              truncate
-                              text-sm
-                              font-semibold
-                              text-slate-800
-                            "
-                          >
+                            className=" max-w-45 truncate text-sm font-semibold text-slate-800 ">
                             {appointment?.customerId?.name ||
                               "Unknown"}
                           </p>

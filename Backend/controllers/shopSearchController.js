@@ -1,5 +1,6 @@
 import { algoliaClient, SHOP_INDEX,} from "../config/algolia.js";
 
+// 
 export const searchShops = async (req, res) => {
   try {
     const query = String(req.query.q || "").trim();
@@ -22,7 +23,7 @@ export const searchShops = async (req, res) => {
     return res.status(200).json({ success: true, shops: result.hits,});
 
   } catch (error) {
-    console.error("Algolia search error:", error);
+    // console.error("Algolia search error:", error);
 
     return res.status(500).json({
       success: false,

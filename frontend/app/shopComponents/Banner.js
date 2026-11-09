@@ -2,17 +2,10 @@
 "use client";
 
 import React from "react";
-import {
-  MapPin,
-  Clock3,
-  BriefcaseBusiness,
-  Store,
-  CalendarCheck,
-  Navigation,
-} from "lucide-react";
+import { MapPin, Clock3, BriefcaseBusiness, Store, CalendarCheck, Navigation, } from "lucide-react";
 import Link from "next/link";
 
-export default function Banner({ shopData }) {
+export default function Banner({ myShopInfo }) {
   return (
     <section className=" relative mb-6 w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:shadow-md">
       
@@ -42,7 +35,7 @@ export default function Banner({ shopData }) {
               </div>
 
               <p className="truncate text-sm font-semibold text-blue-100">
-                {shopData?.shopName || "My Shop"}
+                {myShopInfo?.shopName || "My Shop"}
               </p>
 
             </div>
@@ -60,7 +53,7 @@ export default function Banner({ shopData }) {
             >
               Welcome,{" "}
               <span className="text-blue-100">
-                {shopData?.name || "Shop Owner"}
+                {myShopInfo?.name || "Shop Owner"}
               </span>
             </h2>
 
@@ -89,7 +82,7 @@ export default function Banner({ shopData }) {
               backdrop-blur-md
             "
           >
-            <img src={shopData?.shopImage} className="object-cover h-30 w-40 rounded-sm" />
+            <img src={myShopInfo?.shopImage} className="object-cover h-30 w-40 rounded-sm" />
             <div>
 
               <div className="flex gap-2 p-2 
@@ -104,7 +97,7 @@ export default function Banner({ shopData }) {
                 </p>
 
                 <p className="mt-0.5 text-sm font-bold text-white">
-                  {shopData?.experience || "Not specified"} Years
+                  {myShopInfo?.experience || "Not specified"} Years
                 </p>
 
                 </div>
@@ -159,10 +152,10 @@ export default function Banner({ shopData }) {
             iconClass="bg-blue-50 text-blue-600"
           >
             <p
-              title={shopData?.shopName}
+              title={myShopInfo?.shopName}
               className="mt-1 truncate text-sm font-semibold text-slate-700"
             >
-              {shopData?.shopName || "Shop not available"}
+              {myShopInfo?.shopName || "Shop not available"}
             </p>
 
             <p className="mt-1 text-xs text-slate-400">
@@ -177,11 +170,11 @@ export default function Banner({ shopData }) {
             iconClass="bg-red-50 text-red-600"
           >
             <p className="mt-1 text-sm font-semibold text-slate-700">
-              {shopData?.city || "City not available"}
+              {myShopInfo?.city || "City not available"}
             </p>
 
             <p className="mt-1 truncate text-xs text-slate-400">
-              {shopData?.country || "Country not available"}
+              {myShopInfo?.country || "Country not available"}
             </p>
           </InfoCard>
 
@@ -226,20 +219,20 @@ export default function Banner({ shopData }) {
               </p>
 
               <p className="mt-1 break-words text-sm font-medium leading-6 text-slate-700">
-                {shopData?.address ||
+                {myShopInfo?.address ||
                   "Shop address has not been added yet."}
               </p>
 
               <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-400">
 
                 <span>
-                  {shopData?.city || "City"}
+                  {myShopInfo?.city || "City"}
                 </span>
 
                 <span className="text-slate-300">•</span>
 
                 <span>
-                  {shopData?.country || "Country"}
+                  {myShopInfo?.country || "Country"}
                 </span>
 
               </div>

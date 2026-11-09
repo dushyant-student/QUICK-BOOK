@@ -1,17 +1,13 @@
 import jwt from "jsonwebtoken";
 import User from "../models/userModel.js";
+import fireBaseUserModel from "../models/FireBaseUserModel.js";
 
 export const protect = async (req, res, next) => {
     try {
         // GET TOKEN FROM COOKIE
+        
         const token = req.cookies?.token;
-
        
-        // console.log("========== PROTECT ==========");
-        // console.log("COOKIES:", req.cookies);
-        // console.log("TOKEN FROM BACKEND:", token);
-
-
         // TOKEN NOT FOUND
         if (!token) {
             return res.status(401).json({
@@ -21,18 +17,14 @@ export const protect = async (req, res, next) => {
         }
 
 
-       
+    
         const decoded = jwt.verify(
             token,
             process.env.SECRET_KEY
         );
 
-        
-
-        // FIND USER
-        const user = await User
-            .findById(decoded.id)
-            .select("-password");
+        // Find user in Firebase and MongoDB
+        const user = await fireBaseUserModel.findById(decoded.id).select("-password") || await User.findById(decoded.id).select("-password") ;
 
         if (!user) {
             return res.status(404).json({
@@ -44,10 +36,11 @@ export const protect = async (req, res, next) => {
 
        
         req.user = user;
+        
         next();
 
     } catch (error) {
-        console.log("PROTECT ERROR:", error.message);
+        // console.log("PROTECT ERROR:", error.message);
 
         return res.status(401).json({
             success: false,

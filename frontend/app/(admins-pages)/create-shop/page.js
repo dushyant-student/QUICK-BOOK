@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useAuth } from "@/context/authProvider.js";
@@ -8,6 +7,7 @@ import { Camera, Eye, EyeOff, Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
+
 
 const initialForm = {
   name: "",
@@ -45,8 +45,8 @@ const inputClass = "w-full rounded-xl border-2 border-gray-200 px-4 py-2 outline
 export default function Page() {
   const { myShopInfo, isLoading, user } = useAuth();
   const router = useRouter();
-
   const [form, setForm] = useState(initialForm);
+  
   const [imagePreview, setImagePreview] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
@@ -68,11 +68,15 @@ export default function Page() {
     });
   }, [myShopInfo, isLoading]);
 
+
+
   // Handle all inputs
   const handleChange = (name, value) => {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
+
+  
   // Image validation and preview
   const handleImageChange = (e) => {
     const file = e.target.files?.[0];
@@ -178,6 +182,8 @@ export default function Page() {
   };
 
   const image = imagePreview || (typeof form.shopImage === "string" && form.shopImage) || "/image/defaultImage.png";
+
+
 
   return (
     <main className="min-h-screen px-5 py-8 md:px-20">

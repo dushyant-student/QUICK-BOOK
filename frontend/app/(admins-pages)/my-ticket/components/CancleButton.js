@@ -1,20 +1,18 @@
 "use client"
 
-
 import { cancleTicket } from '@/services/bookingTicketService';
-import { useRouter } from 'next/navigation';
 import React from 'react'
 import toast from 'react-hot-toast';
 
 export default function CancleButton({customerId}) {
-    const router = useRouter();
+    
     
     const cancleRequest = async () => {
         try{
             const request = await cancleTicket(customerId);
             if (request.success){
                 toast.success("Ticket SuccessFully Cancelled !")
-                router.push("/my-ticket")
+                window.location.reload();
             }
 
         }catch(err){

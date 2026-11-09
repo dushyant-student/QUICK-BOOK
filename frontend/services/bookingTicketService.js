@@ -10,19 +10,13 @@ export const bookingTicket = async(shopId,data)=>{
 //My Tickets servies is in serviceServices
 
 
-
 export const cancleTicket = async(customerId)=>{
     const response = await api.delete(`/booking/cancle-ticket/${customerId}`)
     return response.data ;
 }
 
 
-//Shopkeeper Customer Bookings 
-export const myAllCustomers = async(userId)=>{
-    const response  = await api.get(`/booking/my-all-customers/${userId}`);
-    return response.data ;
-
-}
+//Shopkeeper Customer Bookings  in serverServices
 
 
 export const deleteCustomer = async(customerId,shopId)=>{

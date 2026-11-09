@@ -2,7 +2,6 @@
 import Link from "next/link";
 
 export default function NotFound() {
-
   
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50 px-4 text-center">

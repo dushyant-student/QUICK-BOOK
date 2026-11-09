@@ -2,6 +2,8 @@
 import bookingHistoryModel from "../models/ticketHistoryModel.js";
 import ticketModel from "../models/ticketModel.js";
 
+
+
 export const Ticket = async (req, res) => {
     try {
 
@@ -13,7 +15,7 @@ export const Ticket = async (req, res) => {
         });
 
 
-        // console.log(ticketExist, "------------------")
+     
         if (ticketExist) {
             return res.status(409).send({
                 message: "You Have Already Booked Ticket",
@@ -61,7 +63,7 @@ export const Ticket = async (req, res) => {
 
     } catch (error) {
 
-        console.log("Booking Error:", error);
+        // console.log("Booking Error:", error);
 
         return res.status(500).send({
             message: "Internal Server Error",
@@ -74,8 +76,10 @@ export const Ticket = async (req, res) => {
 
 
 export const MyTickets = async (req, res) => {
+    
     try {
-
+         
+    
         const { userId } = req.params;
 
 
@@ -109,7 +113,7 @@ export const MyTickets = async (req, res) => {
         })
 
     } catch (err) {
-        console.log("err in Mytick contolller;- ", err)
+        // console.log("err in Mytick contolller;- ", err)
     }
 
 }
@@ -158,7 +162,7 @@ export const deleteTicket = async (req, res) => {
         );
 
     } catch (error) {
-        console.log("Cancel ticket error:", error);
+        // console.log("Cancel ticket error:", error);
 
         return res.status(500).json({
             success: false,
@@ -173,7 +177,7 @@ export const deleteTicket = async (req, res) => {
 export const MyCustomers = async (req, res) => {
 
     try {
-
+        
         const { userId } = req.params;
 
         const myId = userId;
@@ -208,7 +212,7 @@ export const MyCustomers = async (req, res) => {
         })
 
     } catch (err) {
-        console.log("err in Mytick contolller;- ", err)
+        // console.log("err in Mytick contolller;- ", err)
     }
 
 }
@@ -247,7 +251,7 @@ export const deleteCustomer = async (req, res) => {
         });
 
     } catch (error) {
-        console.log("Cancel ticket error:", error);
+        // console.log("Cancel ticket error:", error);
 
         return res.status(500).json({
             success: false,
@@ -299,7 +303,7 @@ export const confirmCustomer = async (req, res) => {
         );
 
     } catch (error) {
-        console.log("Cancel ticket error:", error);
+        // console.log("Cancel ticket error:", error);
 
         return res.status(500).json({
             success: false,

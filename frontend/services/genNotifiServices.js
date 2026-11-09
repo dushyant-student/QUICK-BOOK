@@ -8,10 +8,10 @@ export const getShopNotifications = async () => {
         return response.data;
 
     } catch (error) {
-        console.error(
-            "GET SHOP NOTIFICATIONS ERROR:",
-            error.response?.data || error.message
-        );
+        // console.error(
+        //     "GET SHOP NOTIFICATIONS ERROR:",
+        //     error.response?.data || error.message
+        // );
 
         throw error;
     }

@@ -27,7 +27,7 @@ export default function page() {
             
             setNotices( response.data || [] )
         }catch(err){
-            console.log("err in NoticeBoard Owner Shop;-")
+            // console.log("err in NoticeBoard Owner Shop;-")
         }finally{
             setLoading(false)
         }

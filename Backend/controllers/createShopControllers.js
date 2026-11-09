@@ -14,7 +14,7 @@ export const createShop = async (req, res) => {
     
         const { name, email, role, passWord, description, experience, shopName, country, city, address, phoneNo  } = req.body;
 
-
+        
         if (!req.file) {
             return res.status(400).send({
                 success: false,
@@ -96,7 +96,7 @@ export const createShop = async (req, res) => {
         try {
         await saveShopToAlgolia(shop);
         } catch (error) {
-        console.error("Algolia sync failed:", error);
+        // console.error("Algolia sync failed:", error);
         }
 
         return res.status(200).send({
@@ -112,10 +112,7 @@ export const createShop = async (req, res) => {
 
     } catch (err) {
 
-        console.log(
-            "err in Create Shop Controller :- ",
-            err
-        );
+        // console.log( "err in Create Shop Controller :- ", err );
 
         return res.status(500).send({
 
@@ -207,7 +204,7 @@ export const UpdateMyShop = async (req, res) => {
             try {
                 await saveShopToAlgolia(UpdateData);
             } catch (error) {
-                console.error("Algolia sync failed:", error.message);
+                // console.error("Algolia sync failed:", error.message);
             }
 
             return res.status(200).send({
@@ -242,17 +239,18 @@ export const UpdateMyShop = async (req, res) => {
 
 export const shopData = async (req, res) => {
     const { id } = req.params;
-    
+  
     if (!id) {
         return res.status(400).send({
             message: "id is required",
             success: false
         })
     }
-
+    
     const shopData = await ShopModel.find({
         shopId: id,
     }).select("-passWord");
+    
 
     if (!shopData) {
         return res.status(404).send({
@@ -292,7 +290,7 @@ export const allShopData = async (req, res) => {
         })
 
     } catch (err) {
-        console.log("err in Get allSHop;-", err);
+        // console.log("err in Get allSHop;-", err);
         return res.status(500).json({
             success: false,
             message: "Internal Server Error"
@@ -305,8 +303,8 @@ export const allShopData = async (req, res) => {
 export const ShopOwnerProfile = async (req, res) => {
     
     try {
-
         const { id } = req.params;
+        
 
         // MongoDB ID Validate
         if (!mongoose.isValidObjectId(id)) {
@@ -337,7 +335,7 @@ export const ShopOwnerProfile = async (req, res) => {
 
     } catch (error) {
 
-        console.log("ERROR:", error);
+        // console.log("ERROR:", error);
 
         return res.status(500).json({
             message: "Internal Server Error",

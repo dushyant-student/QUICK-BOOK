@@ -43,15 +43,14 @@ const convertToMinutes = (time) => {
   return hours * 60 + minutes;
 };
 
-const BookingCard = ({ openTime, closeTime, shopId }) => {
+const BookingCard = ({ openTime, closeTime, shopId ,user }) => {
   const [subject, setSubject] = useState("");
   const [method, setMethod] = useState("Cash");
-
   const [currTime, setCurrTime] = useState("");
   const [isShopOpen, setIsShopOpen] = useState(false);
   const [isBooking, setIsBooking] = useState(false);
 
-  const { user } = useAuth();
+
   const router = useRouter();
 
   // Check shop opening and closing time
@@ -136,6 +135,7 @@ const BookingCard = ({ openTime, closeTime, shopId }) => {
 
       const response = await bookingTicket(shopId, data);
 
+
       if (response?.success) {
         toast.success("Ticket booked successfully!");
         router.push("/my-ticket");
@@ -156,9 +156,9 @@ const BookingCard = ({ openTime, closeTime, shopId }) => {
   };
 
   return (
-    <div className="space-y-5 pb-10">
+    <div className="space-y-5 mt-10 pb-10">
 
-      <section className="rounded-xl border border-blue-100 bg-white p-6">
+      <section className="rounded-xl border border-blue-100 bg-white p-16">
 
         {/* Heading */}
         <div className="mb-5 flex items-center gap-3">

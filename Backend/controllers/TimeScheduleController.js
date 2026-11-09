@@ -1,4 +1,3 @@
-
 import mongoose from "mongoose";
 import ShopModel from "../models/userShopModel.js";
 
@@ -55,7 +54,6 @@ export const ChangeTiming = async (req, res) => {
   }
   );
   
-    console.log("***************",id ,open,close,shop)
     if (!shop) {
       return res.status(404).json({
         success: false,
@@ -99,7 +97,7 @@ export const getShopTiming = async (req, res) => {
     const shop = await ShopModel.find({shopId:id}).select(
       "openTime closeTime"
     );
-    console.log("Id incomming",id,shop)
+    // console.log("Id incomming",id,shop)
     if (!shop) {
       return res.status(404).json({
         success: false,
@@ -113,7 +111,7 @@ export const getShopTiming = async (req, res) => {
       data:shop
     });
   } catch (error) {
-    console.error("GET SHOP TIMING ERROR:", error);
+    // console.error("GET SHOP TIMING ERROR:", error);
 
     return res.status(500).json({
       success: false,

@@ -24,6 +24,10 @@ const userSchema = new mongoose.Schema(
             type: String,
 
         },
+        firebaseUid: {
+            type:String,
+            required:true
+        },
         description: {
             type: String,
             default: "Hi , I Am Here"

@@ -1,9 +1,8 @@
 import Link from "next/link";
-import CancleButton from "@/app/components/CancleButton";
+import CancleButton from "@/app/(admins-pages)/my-ticket/components/CancleButton";
 import Back_View from "./components/Back_View";
 import PrintButton from "./components/PrintButton";
-import { getMeServer } from "@/services/getMeServer";
-import { myTickets } from "@/services/serverServices";
+import { getMeServer, myTickets } from "@/services/serverServices";
 
 
 // Server-side date formatter
@@ -94,13 +93,13 @@ export default async function BookingTicket() {
     }
 
     const customerId = user?.user?._id ?? user?._id;
-
+    
     return (
         <div className="mt-20 min-h-screen px-4 py-8">
-{/* 
-            <p className="fixed left-0 top-20 z-40 bg-orange-400 px-3 py-2 text-lg font-bold text-white">
+
+            <p className=" bg-orange-400 px-3 py-2 text-lg font-bold text-white">
                 BOOKING TICKETS
-            </p> */}
+            </p>
 
             {userTickets.map((item, index) => {
                 const shopId =

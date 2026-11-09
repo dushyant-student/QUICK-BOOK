@@ -3,7 +3,7 @@ import bookingHistoryModel from "../models/ticketHistoryModel.js";
 
 export const dashBoardDetails = async (req, res) => {
     try {
-
+     
         const shopId = req.user?.id ;
 
         //Totals Customers 
@@ -60,7 +60,7 @@ export const dashBoardDetails = async (req, res) => {
         });
 
     } catch (error) {
-        console.error("Dashboard error:", error);
+        // console.error("Dashboard error:", error);
 
         res.status(500).json({
             success: false,

@@ -8,7 +8,7 @@ export const sendContactMessage = async (req, res) => {
   try {
     const { name, email, subject, message, website } = req.body || {};
 
-    // Honeypot bot protection
+  
     if (website) {
       return res.status(200).json({
         success: true,
@@ -16,7 +16,7 @@ export const sendContactMessage = async (req, res) => {
       });
     }
 
-    // Validate input types
+  
     const fields = [name, email, subject, message];
 
     if (!fields.every((field) => typeof field === "string")) {
@@ -26,13 +26,8 @@ export const sendContactMessage = async (req, res) => {
       });
     }
 
-    // Server-side validation
-    const errors = validateContact({
-      name,
-      email,
-      subject,
-      message,
-    });
+  
+    const errors = validateContact({  name,  email,  subject,  message, });
 
     if (Object.keys(errors).length > 0) {
       return res.status(400).json({
@@ -43,13 +38,13 @@ export const sendContactMessage = async (req, res) => {
     }
 
     await transporter.sendMail({
-        from: `"Turn Support" <${process.env.GMAIL_USER}>`,
-        to: process.env.CONTACT_RECEIVER,
-        replyTo: email.trim(),
+      from: `"Turn Support" <${process.env.GMAIL_USER}>`,
+      to: process.env.CONTACT_RECEIVER,
+      replyTo: email.trim(),
 
-        subject: `📩 New Contact Message: ${subject.trim()}`,
+      subject: `📩 New Contact Message: ${subject.trim()}`,
 
-        text: `
+      text: `
       New Contact Message - Turn
 
       Name: ${name}
@@ -60,7 +55,7 @@ export const sendContactMessage = async (req, res) => {
       ${message}
         `,
 
-        html: `
+      html: `
         <!DOCTYPE html>
         <html>
         <head>
@@ -216,7 +211,7 @@ export const sendContactMessage = async (req, res) => {
         </body>
         </html>
         `,
-      });
+    });
 
     logger.info("Contact message sent successfully");
 

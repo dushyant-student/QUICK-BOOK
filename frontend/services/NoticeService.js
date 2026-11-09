@@ -7,7 +7,6 @@ export const sendNotice = async(shopId,noticeData)=>{
 
 
 export const  fecthAllNotice = async(shopId)=>{
-   
     const response = await api.get(`/notice/give-all/${shopId}`)
     return response.data ;
 }

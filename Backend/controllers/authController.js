@@ -1,7 +1,10 @@
-import { v2 as cloudinary } from "cloudinary";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import userModel from "../models/userModel.js";
+import fireBaseUserModel from "../models/FireBaseUserModel.js";
+import { firebaseAuth } from "../config/firebaseAdmin.js";
+
+
 
 
 // GENERATE JWT + HTTP ONLY COOKIE After Login
@@ -31,8 +34,9 @@ export const generateToken = (res, userId) => {
 
 
 
-// REGISTER
 
+
+// REGISTER
 export const Register = async (req, res) => {
     try {
         const { name, email, passWord } = req.body;
@@ -68,7 +72,7 @@ export const Register = async (req, res) => {
             },
         });
     } catch (error) {
-        console.log("REGISTER Fault:", error);
+        // console.log("REGISTER Fault:", error);
 
         return res.status(500).json({
             success: false,
@@ -77,8 +81,10 @@ export const Register = async (req, res) => {
     }
 };
 
-// LOGIN
 
+
+
+// LOGIN
 export const Login = async (req, res) => {
     try {
         const { email, passWord } = req.body;
@@ -131,7 +137,7 @@ export const Login = async (req, res) => {
             },
         });
     } catch (error) {
-        console.log("LOGIN Fault:", error);
+        // console.log("LOGIN Fault:", error);
 
         return res.status(500).json({
             success: false,
@@ -142,136 +148,9 @@ export const Login = async (req, res) => {
 
 
 
-// GET MY PROFILE
-export const getServerProfile = async (req, res) => {
-    try {
-       
 
-        if (!req?.user || !req?.user?.id) {
-            return res.status(401).json({
-                success: false,
-                message: "Unauthorized User Credentials",
-            });
-        }
-
-        const profile = await userModel
-            .findById(req.user?.id)
-            .select("-passWord");
-
-        if (!profile) {
-            return res.status(404).json({
-                success: false,
-                message: "User Not Found",
-            });
-        }
-
-        return res.status(200).json({
-            success: true,
-            profile,
-        });
-    } catch (error) {
-        
-        return res.status(500).json({
-            success: false,
-            message: error.message,
-        });
-    }
-};
-
-// UPDATE PROFILE
-
-export const updateProfile = async (req, res) => {
-    try {
-       
-        if (!req.user || !req.user.id) {
-            return res.status(401).json({
-                success: false,
-                message: "Unauthorized",
-            });
-        }
-
-        const user = await userModel.findById(req.user?.id);
-
-        if (!user) {
-            return res.status(404).json({
-                success: false,
-                message: "User Not Found",
-            });
-        }
-
-        // Update name
-        if (req.body.name) {
-            user.name = req.body?.name;
-        }
-
-        // Update email
-        if (req.body.email) {
-            user.email = req.body?.email;
-        }
-
-        // Update description
-        if (req.body.description) {
-            user.description = req.body?.description;
-        }
-
-        // Update profile image
-        if (req.file) {
-            // Delete old image
-            if (user.public_id) {
-                await cloudinary.uploader.destroy(
-                    user.public_id
-                );
-            }
-
-            // Upload new image
-            const result = await cloudinary.uploader.upload(
-                req.file.path
-            );
-
-            user.imageURL = result.secure_url;
-            user.public_id = result.public_id;
-        }
-
-        // Update password
-        if (req.body?.passWord) {
-            if (req.body?.passWord.length < 6) {
-                return res.status(400).json({
-                    success: false,
-                    message:
-                        "Password must be at least 6 characters long",
-                });
-            }
-
-            user.passWord = await bcrypt.hash(
-                req.body.passWord,
-                10
-            );
-        }
-
-        const updatedUser = await user.save();
-
-        return res.status(200).json({
-            success: true,
-            message: "Profile Updated Successfully",
-            data: {
-                id: updatedUser._id,
-                name: updatedUser.name,
-                email: updatedUser.email,
-                description: updatedUser.description,
-                imageURL: updatedUser.imageURL,
-            },
-        });
-    } catch (error) {
-        
-        return res.status(500).json({
-            success: false,
-            message: error.message,
-        });
-    }
-};
 
 // LOGOUT
-
 export const Logout = async (req, res) => {
     try {
         res.clearCookie("token", {
@@ -295,4 +174,100 @@ export const Logout = async (req, res) => {
             message: error.message,
         });
     }
+};
+
+
+
+
+
+//Firebase Login Controller
+export const firebaseLogin = async (req, res) => {
+  try {
+    
+    const { idToken } = req.body || {};
+
+    if (!idToken) {
+      return res.status(400).json({
+        success: false,
+        message: "Firebase ID token is required",
+      });
+    }
+
+   
+    const decodedToken = await firebaseAuth.verifyIdToken(idToken);
+    const { uid, email, name, picture, email_verified, } = decodedToken;
+
+    if (!email || !email_verified) {
+      return res.status(401).json({
+        success: false,
+        message: "Verified Google email is required",
+      });
+    }
+
+    
+    let user = await fireBaseUserModel.findOne({
+      firebaseUid: uid,
+    });
+
+    
+    if (!user) {
+      user = await fireBaseUserModel.findOne({
+        email: email.toLowerCase(),
+      });
+    }
+   
+
+   
+    if (!user) {
+      user = await fireBaseUserModel.create({
+        name: name || email.split("@")[0],
+        email: email.toLowerCase(),
+        firebaseUid: uid,
+        imageURL: picture || "",
+        authProvider: "google",
+      });
+
+    } else {
+      
+      if (user.firebaseUid && user.firebaseUid !== uid) {
+        return res.status(409).json({
+          success: false,
+          message: "This email is already linked to another Google account",
+        });
+      }
+
+      user.firebaseUid = uid;
+
+      if (!user.imageURL && picture) {
+        user.imageURL = picture;
+      }
+
+      await user.save();
+    }
+
+
+     generateToken(res, user._id.toString());
+    
+    
+    return res.status(200).json({
+      success: true,
+      isNewUser: user.createdAt?.getTime() === user.updatedAt?.getTime(),
+      message: "Google login successful",
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        profilePic: user.imageURL,
+      },
+    });
+
+  } catch (error) {
+    console.error("Firebase Login Error:", error);
+
+    return res.status(401).json({
+      success: false,
+      message: "Google authentication failed",
+      error: error.message,
+    });
+  }
 };

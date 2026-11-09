@@ -36,9 +36,9 @@ export const NoticeController = async (req, res) => {
 };
 
 
-
 export const getALlNotices = async (req, res) => {
     try {
+        
         const { shopId } = req.params ;
         
         if (!shopId ) {
@@ -58,7 +58,7 @@ export const getALlNotices = async (req, res) => {
          
         });    
     } catch (err) {
-        console.log("Notice Post Error :-", err);
+        // console.log("Notice Post Error :-", err);
 
         return res.status(500).json({
             success: false,
@@ -93,7 +93,7 @@ export const getNoticeById = async (req, res) => {
          
         });
     } catch (err) {
-        console.log("Notice Post Error :-", err);
+        // console.log("Notice Post Error :-", err);
 
         return res.status(500).json({
             success: false,

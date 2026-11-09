@@ -1,17 +1,19 @@
 import jwt from "jsonwebtoken";
 import userModel from "../models/userModel.js";
+import fireBaseUserModel from "../models/FireBaseUserModel.js";
 
 
 export const getMe = async (req, res) => {
   try {
 
     const token = req.cookies?.token;
-  
+
 
     if (!token) {
       return res.status(201).json({
         success: false,
         user: null,
+
       });
     }
 
@@ -21,11 +23,12 @@ export const getMe = async (req, res) => {
       process.env.SECRET_KEY
     );
 
-    
 
-    const user = await userModel
-      .findById(decoded.id)
-      .select("-passWord");
+
+    const firebaseUser = await fireBaseUserModel.findById(decoded.id).select("-passWord");
+    let user = await userModel.findById(decoded.id).select("-passWord");
+
+    user = user || firebaseUser
 
 
     if (!user) {
@@ -37,14 +40,17 @@ export const getMe = async (req, res) => {
     }
 
 
+
     return res.status(200).json({
       success: true,
-      user,
+      user: user,
 
     });
+
+
   } catch (error) {
     // Token invalid or expired
-    console.log(error)
+    // console.log(error)
     return res.status(200).json({
       success: false,
       user: null,

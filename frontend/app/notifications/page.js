@@ -15,8 +15,7 @@ export default function NoticeBoard() {
     const shopId = user?._id ;
     
 
-    const CallFunction = async()=>{
- 
+    const CallFunction = async()=>{ 
         try{
             const response = await fecthAllNotice(shopId)
             if ( !response.success){
@@ -25,7 +24,7 @@ export default function NoticeBoard() {
             
             setNotices( response.data || [] )
         }catch(err){
-            console.log("NoticeBoard Owner Shop;-")
+            // console.log("NoticeBoard Owner Shop;-")
         }
     }
     

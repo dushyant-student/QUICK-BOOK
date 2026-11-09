@@ -3,6 +3,7 @@ import bookingHistoryModel from "../models/ticketHistoryModel.js";
 
 export const historyData = async (req, res) => {
     try {
+        
 
         const { shopId } = req.params;
 
@@ -31,7 +32,7 @@ export const historyData = async (req, res) => {
         })
 
     } catch (err) {
-        console.log("err in history Contorllers ;- ", err)
+        // console.log("err in history Contorllers ;- ", err)
         res.status(500).send({
             message: "Network Error ",
             succes: false
@@ -44,7 +45,7 @@ export const historyData = async (req, res) => {
 export const callMyShopStatus = async (req, res) => {
     try {
         const { shopId } = req.params;
-        
+       
         const fifteenHoursAgo = new Date(
                 Date.now() - 15 * 60 * 60 * 1000
             );
@@ -52,17 +53,17 @@ export const callMyShopStatus = async (req, res) => {
 
         const CompletedCount = await bookingHistoryModel.countDocuments({
             shopId:shopId,
-            createdAt: { $lte: fifteenHoursAgo },
+            createdAt: { $gte: fifteenHoursAgo },
             status: "Completed"
         });
 
         const waitingCount = await bookingHistoryModel.countDocuments({
             shopId:shopId ,
-            createdAt: { $lte: fifteenHoursAgo },
+            createdAt: { $gte: fifteenHoursAgo },
             status: "Waiting"
         });
-        
         const totalCount = CompletedCount + waitingCount;
+        
         
 
 
@@ -81,7 +82,7 @@ export const callMyShopStatus = async (req, res) => {
         })
 
     } catch (err) {
-        console.log("err in history Contorllers ;- ", err)
+        // console.log("err in history Contorllers ;- ", err)
         res.status(500).send({
             message: "Network Error ",
             succes: false

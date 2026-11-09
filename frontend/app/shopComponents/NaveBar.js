@@ -1,35 +1,16 @@
-
 "use client";
 
-import { useAuth } from "@/context/authProvider";
+
 import Link from "next/link";
 import React, { useState } from "react";
-import {
-  Menu,
-  X,
-  CalendarDays,
-  User,
-  LogOut,
-  ShoppingBag,
-  Store,
-  Ticket,
-  House,
-  Contact,
-  Phone,
-  Bell,
-  Megaphone,
-  Clock,
-  BookDashed,
-  NotepadText,
-} from "lucide-react";
-
+import { Menu, X, CalendarDays, User, LogOut, ShoppingBag, Store, Ticket, House, Contact, Phone, Megaphone, Clock, BookDashed, NotepadText,} from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { LogoutService } from "@/services/authServices";
 
-function NaveBar(params) {
+function NaveBar({user ,myShopInfo }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const { user, myShopInfo, logout } = useAuth();
 
   const pathname = usePathname();
   const router = useRouter();
@@ -103,7 +84,7 @@ function NaveBar(params) {
 
   const handleLogout = async () => {
     try {
-      const response = await logout();
+      const response = await LogoutService();
 
       if (response?.success) {
         closeMenu();

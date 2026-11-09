@@ -1,5 +1,6 @@
 import ShopModel from "../models/userShopModel.js";
 
+
 export const getShopNotifications = async (req, res) => {
     try {
         const shops = await ShopModel.find(
@@ -23,7 +24,7 @@ export const getShopNotifications = async (req, res) => {
         });
 
     } catch (err) {
-        console.error("SHOP NOTIFICATION ERROR:", err);
+        // console.error("SHOP NOTIFICATION ERROR:", err);
 
         return res.status(500).json({
             success: false,

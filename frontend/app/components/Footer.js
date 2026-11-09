@@ -1,8 +1,12 @@
+"use client"
 
 import Link from "next/link";
 import { Clock, MapPin, Mail, Phone, ArrowRight, MonitorPlay} from "lucide-react";
+import { usePathname } from "next/navigation";
 
 export default function Footer() {
+  const pathname = usePathname();
+  
   return (
     <footer className="bg-[#173454] text-white mt-20 w-full ">
       {/* MAIN FOOTER */}
@@ -128,13 +132,17 @@ export default function Footer() {
               <span>+91 XXXXX XXXXX</span>
             </li>
           </ul>
-
+          {
+            pathname === "/contact"? 
+            "" 
+            :
           <Link
             href="/contact"
             className="mt-6 inline-flex items-center gap-2 rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-[#173454] transition hover:bg-blue-100 active:scale-95"
           >
             Contact Support <ArrowRight size={16} />
           </Link>
+          }
         </div>
       </div>
 

@@ -134,7 +134,7 @@ const handleSubmit = async (e) => {
 
           <div className="mt-10 rounded-xl border border-white/20 bg-white/10 p-4">
             <p className="text-sm leading-6 text-gray-200">
-              For booking-related issues, please include your
+              For Booking-related issues, please include your
               ticket or appointment details in your message.
             </p>
           </div>

@@ -13,7 +13,7 @@ export default function AboutPage() {
       <section className="bg-black px-5 py-20 text-white md:py-28">
         <div className="mx-auto max-w-5xl text-center">
           <p className="mb-4 text-sm font-semibold uppercase tracking-[3px] text-blue-200">
-            About Turn
+            About QUICK-Book
           </p>
 
           <h1 className="mb-6 text-4xl font-bold md:text-6xl">
@@ -25,7 +25,7 @@ export default function AboutPage() {
           </h1>
 
           <p className="mx-auto max-w-2xl text-base leading-7 text-gray-200 md:text-lg">
-            Turn makes appointment booking simple. Book your
+            QUICK-Book makes appointment booking simple. Book your
             slot, track your token, and save your valuable time
             without waiting in long queues.
           </p>
@@ -51,7 +51,7 @@ export default function AboutPage() {
           </h2>
 
           <p className="mb-4 leading-7 text-gray-600">
-            Turn is an appointment and token management
+            QUICK-Book is an appointment and token management
             platform designed to connect customers with shops
             and service providers.
           </p>
@@ -85,7 +85,7 @@ export default function AboutPage() {
         <div className="mx-auto max-w-6xl">
           <div className="mb-12 text-center">
             <h2 className="text-3xl font-bold md:text-4xl">
-              What Makes Turn Useful?
+              What Makes QUICK-Book Useful?
             </h2>
 
             <p className="mt-3 text-gray-600">
@@ -149,7 +149,7 @@ export default function AboutPage() {
         </h2>
 
         <p className="mt-3 text-gray-300">
-          Discover shops and manage your appointments with Turn.
+          Discover shops and manage your appointments with QUICK-BOOK.
         </p>
 
         <Link

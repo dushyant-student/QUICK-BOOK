@@ -1,8 +1,7 @@
-
 import Link from "next/link";
-import { getMeServer } from "@/services/getMeServer";
 import { fecthAllNotice } from "@/services/NoticeService";
 import { Bell, Megaphone, Clock3 } from "lucide-react";
+import { getMeServer } from "@/services/serverServices";
 
 
 function formatDate(dateValue) {
@@ -33,6 +32,7 @@ export default async function NoticeBoard() {
     // Fetch notices
     let userId = user?.user?._id ;
     if (userId) {
+      
         const response = await fecthAllNotice(userId);
         
         if (!response?.success) {

@@ -1,39 +1,51 @@
 "use client";
 
 import React, { use, useEffect, useState } from "react";
-import {  CheckCircle2,} from "lucide-react";
+import { CheckCircle2, } from "lucide-react";
 import { fetchNoticeById } from "@/services/NoticeService";
 import toast from "react-hot-toast";
 
 
 
-export default function NoticePage({params}) {
-  const [newNotice ,setNewNotice] = useState([]);
+export default function NoticePage({ params }) {
+  const [newNotice, setNewNotice] = useState([]);
   const { id } = use(params)
-  const noticeId = id ;
+  const noticeId = id;
+  ExistErr = null;
 
-  const callNotices = async()=>{
-    try{
-      
+  const callNotices = async () => {
+    try {
+
       const response = await fetchNoticeById(noticeId);
-      
-        if ( ! response.success ){
-          toast.error("Network Error !")
-        }
-        setNewNotice((response?.data)[0])
+
+      if (!response.success) {
+        toast.error("Network Error !")
+      }
+      setNewNotice((response?.data)[0])
 
 
-    }catch(err){
-      console.log("NoticePage:- " ,err)
+    } catch (err) {
+      ExistErr = true;
+      // console.log("NoticePage:- " ,err)
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     callNotices()
-  },[noticeId])
-  
-  
-// console.log(newNotice)
+  }, [noticeId])
+
+  if (ExistErr) {
+    return <>
+      <main className="min-h-screen mt-10 flex justify-center items-center bg-gray-50 px-4 py-8 sm:px-6 lg:px-10">
+
+        <button onClick={() => window.location.reload()}>
+          Reload Page
+        </button>
+
+      </main>
+    </>
+  }
+
 
   return (
     <main className="min-h-screen bg-gray-50 px-4 py-8 sm:px-6 lg:px-10">
@@ -66,19 +78,19 @@ export default function NoticePage({params}) {
 
             {/* Meta Information */}
             <div className="mt-5 text-sm text-gray-500">
-                <span>
-                  Date:{" "}
-                  <strong className="text-gray-700">
-                  { 
-                   new Date(newNotice?.createdAt).toLocaleDateString("en-IN", {
+              <span>
+                Date:{" "}
+                <strong className="text-gray-700">
+                  {
+                    new Date(newNotice?.createdAt).toLocaleDateString("en-IN", {
                       day: "2-digit",
                       month: "short",
                       year: "numeric",
                     })
 
-                  } 
-                  </strong>
-                </span>
+                  }
+                </strong>
+              </span>
             </div>
           </div>
 
@@ -97,7 +109,7 @@ export default function NoticePage({params}) {
             <div className="mt-8 px-10">
               <div className="mt-4 flex justify-center items-center">
                 <p className="text-md leading-6 text-gray-600">
-                      {newNotice?.message}
+                  {newNotice?.message}
                 </p>
               </div>
             </div>
@@ -125,7 +137,7 @@ export default function NoticePage({params}) {
                   Shop Administration Staff
                 </p>
                 <p className="mt-1 text-sm text-gray-500">
-                 Phone No: {newNotice?.phone}
+                  Phone No: {newNotice?.phone}
                 </p>
               </div>
 

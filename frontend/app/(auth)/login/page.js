@@ -7,13 +7,14 @@ import { ArrowRight, Eye, EyeOff, Lock, User } from "lucide-react";
 import { useAuth } from "@/context/authProvider";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import GoogleLogin from "@/app/ComponentsClient.js/GoogleLogin";
 
 
 
 export default function LoginForm({ type = "login" }) {
   const router = useRouter();
   const isLogin = type === "login";
-  const { user, login } = useAuth()
+  const { user } = useAuth()
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -83,18 +84,7 @@ export default function LoginForm({ type = "login" }) {
             </p>
           </div>
 
-
-          {/* <div className="grid grid-cols-1 gap-3 mb-6">
-
-            <button
-              type="button"
-              className="flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 text-white py-3 transition"
-            >
-              
-              Google
-            </button>
-
-          </div> */}
+          <GoogleLogin />
 
           {/* Divider */}
           <div className="flex items-center gap-3 mb-6">

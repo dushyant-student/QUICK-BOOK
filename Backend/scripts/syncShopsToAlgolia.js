@@ -12,11 +12,11 @@ async function syncShops() {
 
     console.log(`Found ${shops.length} shops`);
 
-    // Step 3: Shops ko Algolia mein sync
-    // for (const shop of shops) {
-    await saveShopToAlgolia(shop);
-    //   // console.log(`Synced shop: ${shop._id}`);
-    // }
+    //previouse Shop Data add Algolia 
+    for (const shop of shops) {
+      await saveShopToAlgolia(shop);
+
+    }
 
     for (const shop of shops) {
       // console.log(

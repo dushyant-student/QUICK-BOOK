@@ -7,6 +7,7 @@ import { useAuth } from "@/context/authProvider";
 import { ChangeTiming, getShopTiming } from "@/services/ChangeTiming";
 import Link from "next/link";
 
+
 const DEFAULT_OPEN = "09:00";
 const DEFAULT_CLOSE = "18:00";
 
@@ -105,7 +106,7 @@ export default function Page() {
           setTempCloseTime(savedClose);
         }
       } catch (err) {
-        console.error("Timing fetch error:", err);
+        // console.error("Timing fetch error:", err);
 
         if (active) {
           setError("Unable to load shop timing.");
@@ -202,7 +203,7 @@ export default function Page() {
       setError("");
 
     } catch (err) {
-      console.error("Save timing error:", err);
+      // console.error("Save timing error:", err);
 
       setError(
         err.response?.data?.message ||

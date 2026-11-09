@@ -10,43 +10,25 @@ export default function Profile({ shopData }) {
   const { viewALL , user } = useAuth();
   const router = useRouter();
 
-  if (viewALL) return null;
+
  
   
   return (
-    <div className="w-full max-w-sm space-y-5">
+    <div className={ viewALL? "hidden" : "w-full max-w-sm space-y-5"} >
 
-      <div
-        className=" group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl " >
+      <div className=" group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl " >
 
         <div className="relative h-50 overflow-hidden">
 
           {/* Background */}
-          <div className=" absolute inset-0 bg-gradient-to-br from-[#173454] via-blue-700 to-blue-500"/>
+          <div className=" absolute inset-0 bg-linear-to-br from-[#173454] via-blue-700 to-blue-500"/>
 
           {/* Decorative circles */}
           <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-white/10" />
           <div className="absolute -bottom-12 -left-8 h-36 w-36 rounded-full bg-white/10" />
 
           {/* Small badge */}
-          <div
-            className="
-              absolute
-              right-4
-              top-4
-              flex
-              items-center
-              gap-1.5
-              rounded-full
-              bg-white/15
-              px-3
-              py-1.5
-              text-xs
-              font-semibold
-              text-white
-              backdrop-blur-md
-            "
-          >
+          <div className=" absolute right-4 top-4 flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur-md"          >
             <Sparkles size={13} />
             Professional
           </div>

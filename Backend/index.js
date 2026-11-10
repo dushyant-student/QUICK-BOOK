@@ -23,8 +23,8 @@ export const app = express();
 const allowedOrigins = [
   "http://localhost:3000",
   process.env.FRONTEND_URL,
-  "https://q-book-l19a.vercel.app",
 ].filter(Boolean);
+
 
 app.use(
   cors({
@@ -59,7 +59,9 @@ app.get("/api/shops/search", searchShops);
 
 app.use("/api", contactRoutes);
 
-// 6. SERVER
+
+
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {

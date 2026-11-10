@@ -2,7 +2,7 @@ import HomeNavBar from "./components/HomeNavBar";
 import HomeHeroSection from "./components/HomeHeroSection";
 import ShopCart from "./components/ShopCart";
 import AutoRefresh from "./components/AutoRefresh";
-import { getMeServer, myShopData } from "@/services/serverServices";
+import { getMeServer } from "@/services/serverServices";
 
 
 
@@ -17,7 +17,7 @@ export default async function Home() {
     user = user?.user || user?.user?._id ||  null;
     
   } catch (err) {
-    // console.log("Err in NavB",err)
+    // console.log("Err in NavBar",err)
   }
 
   

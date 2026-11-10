@@ -14,9 +14,9 @@ export default function GoogleLogin() {
       setLoading(true);
       
       await googleLogin();
-
       router.push("/dashboard");
-      router.refresh();
+      window.location.reload()
+      
 
     } catch (error) {
       alert(error.message);

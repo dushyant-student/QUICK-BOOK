@@ -8,15 +8,17 @@ import { useAuth } from "@/context/authProvider";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import GoogleLogin from "@/app/ComponentsClient.js/GoogleLogin";
+import { LoginService } from "@/services/authServices";
 
 
 
 export default function LoginForm({ type = "login" }) {
   const router = useRouter();
   const isLogin = type === "login";
-  const { user } = useAuth()
+  const { user, refreshUser, isLoading } = useAuth();
 
   const [showPassword, setShowPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -32,21 +34,49 @@ export default function LoginForm({ type = "login" }) {
     });
   };
 
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
 
-      const response = await login(formData);
-      if (response?.success) {
-        toast.success("Login Successfully")
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await LoginService(formData);
+
+      if (!response?.success) {
+        toast.error(response?.message || "Login failed");
+        return;
       }
 
+      // Verify session using backend cookie
+      const loggedInUser = await refreshUser();
+
+      if (!loggedInUser) {
+        toast.error("Login successful, but session verification failed");
+        return;
+      }
+
+      toast.success("Login Successfully");
+      window.location.reload()
+      
 
     } catch (err) {
-      // console.log("Login Failed:-",err?.response?.data?.message)
-      toast.error(err?.response?.data?.message || "Login failed")
+      // console.error("Login Error:", err);
+
+      toast.error(
+        err?.response?.data?.message || "Login failed"
+      );
+
+    } finally {
+      setIsSubmitting(false);
     }
   };
+
+
+
 
   useEffect(() => {
     if (user) {
@@ -263,14 +293,11 @@ export default function LoginForm({ type = "login" }) {
             {/* Submit */}
             <button
               type="submit"
-              className="group w-full flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 py-3.5 font-semibold text-white shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/40 hover:scale-[1.01] active:scale-[0.99] transition"
+              disabled={isSubmitting}
+              className="group w-full flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 py-3.5 font-semibold text-white disabled:opacity-50"
             >
-              {isLogin ? "Login" : "Create Account"}
-
-              <ArrowRight
-                size={18}
-                className="group-hover:translate-x-1 transition"
-              />
+              {isSubmitting ? "Logging in..." : "Login"}
+              <ArrowRight size={18} />
             </button>
 
           </form>

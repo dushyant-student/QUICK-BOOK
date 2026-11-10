@@ -1,78 +1,69 @@
+
 "use client";
 
-
-import { createContext, useContext, useEffect, useState, useCallback } from "react";
+import { createContext, useContext, useEffect, useState, useCallback,} from "react";
 import { getShopNotifications } from "@/services/genNotifiServices";
 import { ShopById } from "@/services/createShopServices";
 
-
-
 const AuthContext = createContext(null);
-
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+
   const [myShopInfo, setMyshopInfo] = useState(null);
   const [genNotification, setGenNotification] = useState(null);
   const [noti_len, setNoti_len] = useState(0);
   const [viewALL, setViewALL] = useState(false);
-  let userId = null;
-  let API_URL = process.env.NEXT_PUBLIC_BACKEND_API_URL ;
 
-  // CHECK AUTH USER
+  const API_URL = process.env.NEXT_PUBLIC_BACKEND_API_URL;
+
+  
+  const refreshUser = useCallback(async () => {
+    try {
+      const response = await fetch(
+        `${API_URL}/auth/me`,
+        {
+          method: "GET",
+          credentials: "include",
+          cache: "no-store",
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok && data?.success) {
+        setUser(data.user);
+        return data.user;
+      }
+
+      setUser(null);
+      return null;
+
+    } catch (error) {
+      console.error("Auth check failed:", error);
+      setUser(null);
+      return null;
+    }
+  }, [API_URL]);
+
+
+
   useEffect(() => {
-    let mounted = true;
-
-    const getUser = async () => {
+    const checkAuth = async () => {
       try {
-        const response = await fetch(
-          `${API_URL}/auth/me`,
-          {
-            credentials: "include",
-            cache: "no-store",
-          }
-        );
-        
-        
-        const data = await response.json();
-
-
-        if (!mounted) return;
-
-        if (response.ok && data?.success) {
-
-          setUser(data.user);
-
-        } else {
-          setUser(null);
-        }
-      } catch (error) {
-        // console.error("Auth check failed:", error);
-
-        if (mounted) {
-          setUser(null);
-        }
-
+        await refreshUser();
       } finally {
-        if (mounted) {
-          setIsLoading(false);
-        }
+        setIsLoading(false);
       }
     };
 
-    getUser();
-
-    return () => {
-      mounted = false;
-    };
-  }, []);
-
-  userId = user?._id;
+    checkAuth();
+  }, [refreshUser]);
 
 
 
-  // 4. Fetch logged-in user's shop
+  // FETCH SHOP INFORMATION
   const ShopInfo = useCallback(async (userId) => {
     if (!userId) {
       setMyshopInfo(null);
@@ -81,7 +72,6 @@ export function AuthProvider({ children }) {
 
     try {
       const response = await ShopById(userId);
-
 
       if (response.success) {
         setMyshopInfo(
@@ -93,15 +83,22 @@ export function AuthProvider({ children }) {
         setMyshopInfo(null);
       }
 
-      // console.log("Shop info fetched:", response.data);
     } catch (error) {
-      // console.error("Shop info error:", error);
+      console.error("Shop info error:", error);
       setMyshopInfo(null);
     }
   }, []);
 
 
+  // FETCH SHOP WHEN USER CHANGES
+  useEffect(() => {
+    if (!isLoading) {
+      ShopInfo(user?._id || user?.id);
+    }
+  }, [user, isLoading, ShopInfo]);
 
+
+  // RESTORE VIEW SETTINGS
   useEffect(() => {
     const savedView = sessionStorage.getItem("viewALL");
 
@@ -112,7 +109,7 @@ export function AuthProvider({ children }) {
 
 
   const changeView = () => {
-    setViewALL(prev => {
+    setViewALL((prev) => {
       const newView = !prev;
       sessionStorage.setItem("viewALL", String(newView));
       return newView;
@@ -120,7 +117,8 @@ export function AuthProvider({ children }) {
   };
 
 
-
+  
+  //All Notifications
   useEffect(() => {
     const fetchNotification = async () => {
       try {
@@ -128,36 +126,30 @@ export function AuthProvider({ children }) {
 
         setGenNotification(response?.data || null);
         setNoti_len(response?.data?.length ?? 0);
+
       } catch (error) {
-        // console.error("Notification fetch failed:", error);
+        console.error("Notification fetch failed:", error);
       }
     };
 
-    fetchNotification();
-  }, []);
-
-
-
-
-  // Fetch shop whenever userId changes
-  useEffect(() => {
-    if (!isLoading) {
-      ShopInfo(userId);
+    if (!isLoading && user) {
+      fetchNotification();
     }
-  }, [userId, isLoading, ShopInfo]);
+  }, [isLoading, user]);
 
 
-  
   return (
     <AuthContext.Provider
       value={{
         user,
+        setUser,
+        refreshUser,
         myShopInfo,
         isLoading,
         viewALL,
         changeView,
         genNotification,
-        noti_len
+        noti_len,
       }}
     >
       {children}
@@ -165,7 +157,7 @@ export function AuthProvider({ children }) {
   );
 }
 
-// Custom hook
+
 export function useAuth() {
   const context = useContext(AuthContext);
 

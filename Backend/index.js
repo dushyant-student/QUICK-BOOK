@@ -22,7 +22,7 @@ export const app = express();
 // 1. CORS CONFIGURATION
 const allowedOrigins = [
   "http://localhost:3000",
-  process.env.FRONTEND_URL,
+  "https://q-book.vercel.app/",
 ].filter(Boolean);
 
 

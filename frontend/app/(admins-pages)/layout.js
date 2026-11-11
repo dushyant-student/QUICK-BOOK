@@ -4,7 +4,6 @@ import NaveBar from "../shopComponents/NaveBar";
 import SideBar from "../components/SideBar";
 import { getMeServer, myShopData } from "@/services/serverServices";
 import { redirect } from "next/navigation";
-
 export default async function Layout({ children }) {
 
     let user = null;

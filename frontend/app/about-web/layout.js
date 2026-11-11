@@ -1,28 +1,30 @@
-import { getMeServer } from '@/services/serverServices';
-import React from 'react'
-import HomeNavBar from '../components/HomeNavBar';
 
-export default async function layout({children}) {
+import React from "react";
+import { getMeServer } from "@/services/serverServices";
+import HomeNavBar from "../components/HomeNavBar";
+import { redirect } from "next/navigation";
 
-    let user = null;
-      try {
-    
-        user = await getMeServer();
-       
-      } catch (err) {
-        console.log("error in About-Web HomePage:-",err)
-    
-      }
-    
-      if (!user?.success) {
-        redirect("/login")
-      }
+export default async function Layout({ children }) {
 
+  let user = null;
+
+  try {
+    const response = await getMeServer();
+
+    user = response?.user ?? null;
+
+  } catch (err) {
+    console.error("About-Web Layout Error:", err);
+  }
+
+  if (!user?.success) {
+    redirect("/login");
+  }
 
   return (
     <>
-    <HomeNavBar user={user} />
-     {children}
+      <HomeNavBar user={user} />
+      {children}
     </>
-  )
+  );
 }

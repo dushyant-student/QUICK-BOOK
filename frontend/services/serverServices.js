@@ -87,16 +87,6 @@ export const myShopData = async(shopId)=>{
 }
 
 
-//Fetch All Shops 
-export const getAllShop = async()=>{
-    try{
-        return serverApi("/all-shops");
-
-    }catch(err){
-        // console.log("Enable to Fetch All Shops")
-        return response.data;
-    }
-}
 
 // Call Status
 export const CallStatusService= async(shopId)=>{

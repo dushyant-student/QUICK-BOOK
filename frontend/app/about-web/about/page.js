@@ -1,7 +1,7 @@
 import Link from "next/link";
 import {  Users,  Clock,  ShieldCheck,  Target,  CheckCircle,  ArrowRight,} from "lucide-react";
-import Footer from "../components/Footer";
-import HomeNavBar from "../components/HomeNavBar";
+import Footer from "../../components/Footer";
+import HomeNavBar from "../../components/HomeNavBar";
 
 
 export default function AboutPage() {

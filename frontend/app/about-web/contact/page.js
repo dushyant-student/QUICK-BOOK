@@ -3,8 +3,8 @@
 
 import { useState } from "react";
 import { Mail, Phone, MapPin, Send, Clock, CheckCircle,} from "lucide-react";
-import Footer from "../components/Footer";
-import HomeNavBar from "../components/HomeNavBar";
+import Footer from "../../components/Footer";
+import HomeNavBar from "../../components/HomeNavBar";
 import api from "@/lib/axios";
 
 export default function ContactPage() {

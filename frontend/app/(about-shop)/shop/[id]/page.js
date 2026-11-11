@@ -70,15 +70,11 @@ export default async function AppointmentPage({ params }) {
   }
 
 
-
   if (loading) {
     return <div className="mt-30"  >
       <LoadingSpinner />
-
     </div>
   }
-
-
 
 
   return (

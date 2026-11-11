@@ -50,7 +50,7 @@ export default function HomeNavBar({ user }) {
             <Link
               href="/"
               onClick={closeMenu}
-              className="flex items-center gap-1 text-xl font-bold text-orange-500 sm:text-2xl"
+              className="items-center hidden sm:flex gap-1 text-xl font-bold text-orange-500 sm:text-sm"
             >
               Qbook
           

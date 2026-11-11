@@ -129,7 +129,7 @@ export default function SendNotice({ onSend }) {
 
 
     return (
-        <div className="w-full max-w-xl rounded-2xl border border-gray-200 bg-white p-26 shadow-sm md:my-30 mx-auto">
+        <div className="w-full pt-30 max-w-xl rounded-2xl border border-gray-200 bg-white p-26 shadow-sm md:my-30 mx-auto">
 
             {/* Header */}
             <div className="flex items-center gap-3 border-b border-gray-200 pb-4">

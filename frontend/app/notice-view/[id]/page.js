@@ -21,18 +21,19 @@ export default function NoticePage({ params }) {
       if (!response.success) {
         toast.error("Network Error !")
       }
-      setNewNotice((response?.data)[0])
+      setNewNotice(response?.data ?? null)
 
 
     } catch (err) {
       ExistErr = true;
-      // console.log("NoticePage:- " ,err)
+      console.log("NoticePage:- " ,err)
     }
   }
 
   useEffect(() => {
     callNotices()
   }, [noticeId])
+
 
   if (ExistErr) {
     return <>

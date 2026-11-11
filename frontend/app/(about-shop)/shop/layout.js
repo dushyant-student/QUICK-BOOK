@@ -10,8 +10,7 @@ export default async function Layout({ children }) {
     user = await getMeServer();
    
   } catch (err) {
-    // console.log(err,shopId)
-
+    console.log(err)
   }
 
   if (!user?.success) {

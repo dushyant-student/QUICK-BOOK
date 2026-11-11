@@ -6,7 +6,7 @@ import Table_C from './Table_C.js';
 import { useAuth } from '@/context/authProvider.js';
 import { CallStatusService } from '@/services/historyService.js';
 
-function TurnInfo({ TableData ,shopId }) {
+function TurnInfo({ TableData, shopId }) {
 
     const [currentStatus, setCurrentStatus] = useState("");
     const { user } = useAuth();
@@ -20,27 +20,25 @@ function TurnInfo({ TableData ,shopId }) {
 
     const callStatus = async () => {
         try {
-            
+
             const response = await CallStatusService(shopId)
-            
+
             setCurrentStatus(response.data)
             if (!response.success) {
                 return
             }
 
         } catch (err) {
-            // console.log(err, "err in My shop page :-")
+            console.log("err in My shop page :-", err)
         }
     }
 
 
-    useEffect(() => { 
-        if ( !myPosition ) return ;
-
-        callStatus() },
+    useEffect(() => {
+        if (!myPosition) return;
+        callStatus()
+         },
         [myPosition])
-
-
 
 
 
@@ -48,7 +46,7 @@ function TurnInfo({ TableData ,shopId }) {
         <>
             <div className="space-y-5">
 
-              
+
                 <section className="rounded-xl border border-blue-100 bg-white p-5 shadow-[0_2px_12px_rgba(20,70,120,0.03)]">
 
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -77,16 +75,16 @@ function TurnInfo({ TableData ,shopId }) {
 
                         <div className='flex flex-col justify-center gap-2'>
                             <h2 className=' text-xl font-bold bg-green-400 text-white flex justify-center px-4 py-2 rounded-full ' >Shop Status </h2>
-                            <h2 className=' text-xl font-bold text-green-500 bg-green-50 flex justify-center px-8 py-3 rounded-2xl ' >total Clients {currentStatus?.totalCount || 0  } </h2>
-                            <h2 className=' text-xl font-bold text-green-500 bg-green-50 flex justify-center px-8 py-3 rounded-2xl ' >Completed {currentStatus?.CompletedCount || 0 }</h2>
-                            <h2 className=' text-xl font-bold text-green-500 bg-green-50 flex justify-center px-8 py-3 rounded-2xl ' >Remaining {currentStatus?.waitingCount || 0 } </h2>
+                            <h2 className=' text-xl font-bold text-green-500 bg-green-50 flex justify-center px-8 py-3 rounded-2xl ' >total Clients {currentStatus?.totalCount || 0} </h2>
+                            <h2 className=' text-xl font-bold text-green-500 bg-green-50 flex justify-center px-8 py-3 rounded-2xl ' >Completed {currentStatus?.CompletedCount || 0}</h2>
+                            <h2 className=' text-xl font-bold text-green-500 bg-green-50 flex justify-center px-8 py-3 rounded-2xl ' >Remaining {currentStatus?.waitingCount || 0} </h2>
                         </div>
 
                     </div>
                 </section>
 
 
-               {/* Line Status */}
+                {/* Line Status */}
                 <section className="rounded-xl border border-blue-100 bg-white p-5">
 
                     <div className="mb-6 flex items-center gap-3">
@@ -104,7 +102,7 @@ function TurnInfo({ TableData ,shopId }) {
                     </div>
 
 
-                 
+
                     <div className="mb-8 overflow-x-auto pb-3">
                         <div className="flex min-w-78  md:min-w-175 items-center justify-between gap-3">
 

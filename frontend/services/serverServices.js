@@ -6,7 +6,7 @@ export async function getMeServer() {
     try {
         return await serverApi("/auth/me");
     } catch (error) {
-        // console.error("getMeServer error:", error);
+        console.error("getMeServer error:", error);
         return null;
     }
 }
@@ -18,7 +18,7 @@ export const getAllShop = async()=>{
         return serverApi("/all-shops");
 
     }catch(err){
-        // console.log("Enable to Fetch All Shops")
+        console.log("Enable to Fetch All Shops")
         return response.data;
     }
 }
@@ -30,7 +30,7 @@ export const getDashBordDetails= async()=>{
     try{
         return serverApi("/dashboard");
     }catch(err){
-        // console.log("Dash Board Err :-",err)
+        console.log("Dash Board Err :-",err)
         return null;
     }
 
@@ -43,7 +43,7 @@ export const myTickets = async(userId)=>{
        
         return serverApi(`/booking/my-tickets/${userId}`) ;
     }catch(err){
-        // console.log("my Ticket Err:- ",err)
+        console.log("my Ticket Err:- ",err)
         return null ;
     }
 }
@@ -54,7 +54,7 @@ export const ShopOwnerProfileById = async (shopId)=>{
          return serverApi(`/shop-by-id/${shopId}`)
 
      }catch(err){
-        // console.log("Err in owner profile :- ",err)
+        console.log("Err in owner profile :- ",err)
         return null ;
      }
 
@@ -67,7 +67,7 @@ export const myAllCustomers = async(userId)=>{
         return serverApi(`/booking/my-all-customers/${userId}`);
 
     }catch(err){
-        // console.log("Err in Table data:-",err)
+        console.log("Err in Table data:-",err)
         return null ;
     }
     
@@ -95,7 +95,7 @@ export const CallStatusService= async(shopId)=>{
 
     }catch(err){
         console.log("Error:-",err)
-        return []
+        return null
     }
     
 }

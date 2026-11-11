@@ -16,7 +16,7 @@ export default async function Layout({ children }) {
         user = response?.user ?? null;
         
     } catch (err) {
-        // console.error("Authentication error:", err);
+        console.error("Authentication error:", err);
     }
 
     // Redirect
@@ -32,7 +32,7 @@ export default async function Layout({ children }) {
         myShopInfo = response?.data?.[0] ?? null;
 
     } catch (err) {
-        // console.error("Shop data error:", err);
+        console.error("Shop data error:", err);
         
     }
 

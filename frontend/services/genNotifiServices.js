@@ -14,5 +14,6 @@ export const getShopNotifications = async () => {
         // );
 
         throw error;
+        return []
     }
 };

@@ -4,12 +4,14 @@ import React, { use, useEffect, useState } from "react";
 import { CheckCircle2, } from "lucide-react";
 import { fetchNoticeById } from "@/services/NoticeService";
 import toast from "react-hot-toast";
-
+import { useParams } from "next/navigation";
 
 
 export default function NoticePage({ params }) {
   const [newNotice, setNewNotice] = useState([]);
-  const { id } = use(params)
+  const params = useParams();
+  const id = params.id;
+
   const noticeId = id;
   ExistErr = null;
 

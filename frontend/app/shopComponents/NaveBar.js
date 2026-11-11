@@ -7,10 +7,12 @@ import { Menu, X, CalendarDays, User, LogOut, ShoppingBag, Store, Ticket, House,
 import { usePathname, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { LogoutService } from "@/services/authServices";
+import { useAuth } from "@/context/authProvider";
+
 
 function NaveBar({user ,myShopInfo }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+  const { refreshUser } = useAuth();
 
   const pathname = usePathname();
   const router = useRouter();
@@ -88,15 +90,12 @@ function NaveBar({user ,myShopInfo }) {
 
       if (response?.success) {
         closeMenu();
-        toast.success(
-          response?.data?.message || "Logged out successfully"
-        );
+        refreshUser()
+        toast.success( response?.data?.message || "Logged out successfully" );
         router.replace("/login");
-      } else {
-        toast.error(
-          response?.data?.message || "Logout failed"
-        );
+    
       }
+      
     } catch (err) {
       toast.error(
         err.response?.data?.message ||

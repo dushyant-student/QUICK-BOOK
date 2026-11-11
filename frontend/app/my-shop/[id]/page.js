@@ -1,9 +1,8 @@
 import Footer from "@/app/components/Footer";
-import { getMeServer, myAllCustomers, myShopData } from "@/services/serverServices";
+import {CallStatusService, getMeServer, myAllCustomers, myShopData } from "@/services/serverServices";
 import Banner from "@/app/shopComponents/Banner";
 import Profile from "@/app/shopComponents/Profile";
 import ShowCustomers from "@/app/shopComponents/ShowCustomers";
-import { CallStatusService } from "@/services/historyService";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 import NaveBar from "@/app/shopComponents/NaveBar";
 import { redirect } from "next/navigation";

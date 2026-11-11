@@ -1,6 +1,6 @@
-
 "use client";
 
+import api from "@/lib/axios";
 import { createContext, useContext, useEffect, useState, useCallback,} from "react";
 import { getShopNotifications } from "@/services/genNotifiServices";
 import { ShopById } from "@/services/createShopServices";
@@ -19,35 +19,33 @@ export function AuthProvider({ children }) {
   const API_URL = process.env.NEXT_PUBLIC_BACKEND_API_URL;
 
   
-  const refreshUser = useCallback(async () => {
-    try {
-      const response = await fetch(
-        `${API_URL}/auth/me`,
-        {
-          method: "GET",
-          credentials: "include",
-          cache: "no-store",
-        }
-      );
+  
+const refreshUser = useCallback(async () => {
+  try {
+    const response = await api.get("/auth/me");
 
+    const data = response.data;
 
-      const data = await response.json();
-
-      if (response.ok && data?.success) {
-       
-        setUser(data.user);
-        return data.user;
-      }
-
-      setUser(null);
-      return null;
-
-    } catch (error) {
-      console.error("Auth check failed:", error);
-      setUser(null);
-      return null;
+    if (response.status === 200 && data?.success && data?.user) {
+      setUser(data.user);
+      return data.user;
     }
-  }, [API_URL]);
+
+    setUser(null);
+    return null;
+
+  } catch (error) {
+    console.error(
+      "Session verification failed:",
+      error.response?.status,
+      error.response?.data || error.message
+    );
+
+    setUser(null);
+    return null;
+  }
+}, []);
+
 
 
 

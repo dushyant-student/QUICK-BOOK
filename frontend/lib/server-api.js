@@ -17,15 +17,15 @@ export async function serverApi(endpoint, options = {}) {
     const token = cookieStore.get("token")?.value;
 
     const response = await fetch(
-        `${API_URL.replace(/\/$/, "")}${endpoint}`,
-        {
-            ...options,
-            headers: {
-                ...options.headers,
-                ...(token ? { Cookie: `token=${token}` } : {}),
-            },
-            cache: "no-store",
-        }
+    `${API_URL.replace(/\/$/, "")}${endpoint}`,
+    {
+        ...options,
+        headers: {
+            ...options.headers,
+            ...(token ? { Cookie: `token=${token}` } : {}),
+        },
+        cache: "no-store",
+     }
     );
 
     if (!response.ok) {

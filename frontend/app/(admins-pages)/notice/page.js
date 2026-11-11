@@ -28,18 +28,18 @@ export default async function NoticeBoard() {
   try {
     
     const user = await getMeServer();
-    
+     console.log(user,"user.....")
     // Fetch notices
     let userId = user?.user?._id ;
+     console.log(userId,"userId.....")
     if (userId) {
-      
         const response = await fecthAllNotice(userId);
-        
+         console.log(respose,"reponse.....")
         if (!response?.success) {
             throw new Error("Failed to fetch notices");
         }
       notices = response?.data ?? [];
-
+     console.log(notices,"notice.....")
     }
 
 
@@ -47,6 +47,7 @@ export default async function NoticeBoard() {
   } catch (error) {
     // console.error("NoticeBoard Error:", error);
     fetchError = true;
+     console.log(fetchError,"Error Fetch.....")
   }
 
 
@@ -55,7 +56,7 @@ export default async function NoticeBoard() {
     return (
       <div className="mt-40 text-center">
         <h2 className="font-bold text-red-500">
-          Unable to load notices
+          Unable to load notices {fetchError}
         </h2>
         <p className="mt-2 text-gray-500">
           Please try again later.

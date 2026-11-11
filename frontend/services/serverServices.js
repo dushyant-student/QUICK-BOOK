@@ -98,6 +98,16 @@ export const getAllShop = async()=>{
     }
 }
 
+// Call Status
+export const CallStatusService= async(shopId)=>{
+    try{
+        return serverApi(`/history/current-status/${shopId}`);   
 
+    }catch(err){
+        console.log("Error:-",err)
+        return []
+    }
+    
+}
 
 

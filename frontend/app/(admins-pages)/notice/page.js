@@ -47,7 +47,7 @@ export default async function NoticeBoard() {
   } catch (error) {
     // console.error("NoticeBoard Error:", error);
     fetchError = true;
-     console.log(fetchError,"Error Fetch.....")
+     console.log(error,"Error Fetch.....")
   }
 
 

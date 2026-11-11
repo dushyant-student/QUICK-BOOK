@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import {  BookDashed, ShoppingBag, ShoppingBasket, Ticket, User, Menu, X, NotepadTextIcon, Megaphone, Clock, LogOut,} from "lucide-react";
 import Link from "next/link";
 import { LogoutService } from "@/services/authServices";
+import { useAuth } from "@/context/authProvider";
 
 export default function SideBar({ user , myShopInfo }) {
   

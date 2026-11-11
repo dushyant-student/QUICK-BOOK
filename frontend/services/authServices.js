@@ -33,45 +33,31 @@ export const googleLogin = async () => {
     const result = await signInWithPopup(auth, googleProvider);
 
     const idToken = await result.user.getIdToken();
-    
-    // Backend login
-    const loginResponse = await fetch(`${API_URL}/auth/firebase`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify({ idToken }),
-    });
-    
-    const loginData = await loginResponse.json();
-    
-  
-    if (!loginResponse.ok || !loginData.success) {
-      throw new Error(loginData.message);
-    }
-    
-    
-    
-    const response = await fetch(`${API_URL}/auth/me`, {
-      method: "GET",
-      credentials: "include",
-      cache: "no-store",
+
+    // Login through same-origin API
+    const loginResponse = await api.post("/auth/firebase", {
+      idToken,
     });
 
-    const data = await response.json();
-    if (!response.ok || !data.success) {
-      throw new Error("Unable to fetch user");
+    if (!loginResponse.data?.success) {
+      throw new Error(
+        loginResponse.data?.message || "Google login failed"
+      );
     }
-    
-    
+
+    // Verify session
+    const sessionResponse = await api.get("/auth/me");
+
+    if (!sessionResponse.data?.success) {
+      throw new Error("Unable to verify session");
+    }
+
     await signOut(auth);
-    return data;
+
+    return sessionResponse.data;
 
   } catch (error) {
-    // console.error("Google Login Error:", error);
     await signOut(auth).catch(() => {});
     throw error;
   }
 };
-

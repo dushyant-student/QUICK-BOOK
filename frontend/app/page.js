@@ -2,7 +2,7 @@ import HomeNavBar from "./components/HomeNavBar";
 import HomeHeroSection from "./components/HomeHeroSection";
 import ShopCart from "./components/ShopCart";
 import { getMeServer } from "@/services/serverServices";
-import HomeRefresh from "./components/AutoRefresh";
+
 
 
 
@@ -27,7 +27,7 @@ export default async function Home() {
   return (
    
     <main className="min-h-screen bg-white">
-      <HomeRefresh/>
+
       <HomeNavBar user={user} />
       <HomeHeroSection/>
       <div className=" w-full h-screen flex justify-center gap-5 " >

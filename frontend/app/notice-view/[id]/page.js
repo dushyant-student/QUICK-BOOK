@@ -9,8 +9,8 @@ import { useParams } from "next/navigation";
 
 export default function NoticePage({ params }) {
   const [newNotice, setNewNotice] = useState([]);
-  const params = useParams();
-  const id = params.id;
+  const url = useParams();
+  const id = url.id;
 
   const noticeId = id;
   ExistErr = null;

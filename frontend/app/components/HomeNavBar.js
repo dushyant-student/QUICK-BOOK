@@ -7,7 +7,7 @@ import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 export default function HomeNavBar({ user }) {
-
+  
   const { noti_len } = useAuth();
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);

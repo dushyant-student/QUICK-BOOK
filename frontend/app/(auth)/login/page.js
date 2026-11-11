@@ -15,7 +15,7 @@ import { LoginService } from "@/services/authServices";
 export default function LoginForm({ type = "login" }) {
   const router = useRouter();
   const isLogin = type === "login";
-  const { user, refreshUser, isLoading } = useAuth();
+  const { user, refreshUser } = useAuth();
 
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -35,7 +35,7 @@ export default function LoginForm({ type = "login" }) {
   };
 
 
-
+// LOGIN WITH EMAIL PASSWORD
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -45,30 +45,28 @@ export default function LoginForm({ type = "login" }) {
 
     try {
       const response = await LoginService(formData);
-
+      
       if (!response?.success) {
         toast.error(response?.message || "Login failed");
+        
         return;
       }
 
-      // Verify session using backend cookie
+      //Update User in AUTHCONTEXT
       const loggedInUser = await refreshUser();
-
+      
       if (!loggedInUser) {
         toast.error("Login successful, but session verification failed");
         return;
       }
 
       toast.success("Login Successfully");
-      window.location.reload()
       
+            
 
     } catch (err) {
+      toast.error( err?.response?.data?.message || "Login failed" );
       // console.error("Login Error:", err);
-
-      toast.error(
-        err?.response?.data?.message || "Login failed"
-      );
 
     } finally {
       setIsSubmitting(false);
@@ -79,10 +77,10 @@ export default function LoginForm({ type = "login" }) {
 
 
   useEffect(() => {
-    if (user) {
-      router.replace("/");
-    }
-  }, [user, router]);
+  if (user) {
+    router.replace("/");
+  }
+}, [user, router]);
 
 
   return (

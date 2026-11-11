@@ -12,7 +12,7 @@ export default async function Layout({ children }) {
 
     try {
         const response = await getMeServer();
-
+        
         user = response?.user ?? null;
         
     } catch (err) {

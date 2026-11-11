@@ -30,9 +30,11 @@ export function AuthProvider({ children }) {
         }
       );
 
+
       const data = await response.json();
 
       if (response.ok && data?.success) {
+       
         setUser(data.user);
         return data.user;
       }

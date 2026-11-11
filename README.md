@@ -331,7 +331,7 @@ npm install
 Create a `.env.local` file inside the frontend directory.
 
 ```env
-NEXT_PUBLIC_API_URL=http://localhost:5000/api
+NEXT_PUBLIC_FRONTEND_API_URL=http://localhost:5000/api
 BACKEND_API_URL=http://localhost:5000/api
 ```
 

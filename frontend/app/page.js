@@ -11,7 +11,7 @@ export default async function Home() {
   let user = null;
 
   try {
-
+     
     user = await getMeServer();
     
     user = user?.user || user?.user?._id ||  null;

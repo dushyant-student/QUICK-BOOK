@@ -46,7 +46,7 @@ export const googleLogin = async () => {
     
     const loginData = await loginResponse.json();
     
-    
+  
     if (!loginResponse.ok || !loginData.success) {
       throw new Error(loginData.message);
     }

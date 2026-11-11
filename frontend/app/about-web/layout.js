@@ -19,6 +19,7 @@ export default async function Layout({ children }) {
 
   if (!user?.success) {
     redirect("/login");
+    
   }
 
   return (

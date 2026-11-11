@@ -136,6 +136,7 @@ const refreshUser = useCallback(async () => {
       fetchNotification();
     }
   }, [isLoading, user]);
+  
 
 
   return (

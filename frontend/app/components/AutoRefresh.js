@@ -1,14 +1,17 @@
+
 "use client";
 
-import { useAuth } from "@/context/authProvider";
-import { useEffect } from "react";
-export default function AutoRefresh() {
-  
-  const { refreshUser } = useAuth();
-  
+import { useEffect, useRef } from "react";
+
+export default function HomeRefresh() {
+  const refreshed = useRef(false);
+
   useEffect(() => {
-      window.location.reload()
-  }, [refreshUser]);
+    if (!refreshed.current) {
+      refreshed.current = true;
+      window.location.reload();
+    }
+  }, []);
 
   return null;
 }

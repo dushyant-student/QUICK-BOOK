@@ -8,10 +8,10 @@ import { LogoutService } from "@/services/authServices";
 
 export default function SideBar({ user , myShopInfo }) {
   
-  
+  const { refreshUser } = useAuth();
   const pathname = usePathname();
   const router = useRouter();
-
+  
   const [isOpen, setIsOpen] = useState(false);
 
   const handleLogout = async () => {
@@ -22,6 +22,7 @@ export default function SideBar({ user , myShopInfo }) {
         return 
       }
       setIsOpen(false);
+      refreshUser()
       router.replace("/login");
     } catch (error) {
       // console.error("Logout failed:", error);

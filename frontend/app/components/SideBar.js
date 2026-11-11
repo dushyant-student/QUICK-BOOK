@@ -16,7 +16,11 @@ export default function SideBar({ user , myShopInfo }) {
 
   const handleLogout = async () => {
     try {
-      await LogoutService();
+      const Exits =await LogoutService();
+      if (!Exits?.success){
+        toast.error("LogOut Failed")
+        return 
+      }
       setIsOpen(false);
       router.replace("/login");
     } catch (error) {

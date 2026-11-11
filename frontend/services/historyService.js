@@ -7,7 +7,3 @@ export const historyCall= async(shopId)=>{
 }
 
 
-export const CallStatusService= async(shopId)=>{
-    const response = await api.get(`/history/current-status/${shopId}`);    
-    return response.data ;
-}
